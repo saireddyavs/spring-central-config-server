@@ -20,8 +20,7 @@ dependencies {
     implementation 'org.projectlombok:lombok:1.18.18'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     implementation group: 'org.springframework.boot', name: 'spring-boot-starter-actuator', version: '2.4.5'
-    implementation 'org.springframework.boot:spring-boot-starter-amqp'
-    testImplementation 'org.springframework.amqp:spring-rabbit-test'
+    implementation 'org.springframework.cloud:spring-cloud-starter-bus-amqp:2.2.1.RELEASE'
 }
 
 test {

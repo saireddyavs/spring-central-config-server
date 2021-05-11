@@ -1,6 +1,6 @@
 target/
 !.mvn/wrapper/maven-wrapper.jar
-
+jenkins_data/
 ### STS ###
 .apt_generated
 .classpath
