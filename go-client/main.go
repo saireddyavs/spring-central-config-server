@@ -4,11 +4,14 @@ import (
 	"flag"
 	"fmt"
 	"go-client/config"
+	"net/http"
 
 	"github.com/spf13/viper"
 )
 
 var appName = "spring-config-server"
+var amqp_server_url = "amqp://guest:guest@localhost:5672/"
+var config_event_bus = "springCloudBus"
 
 func init() {
 	profile := flag.String("profile", "development", "Environment profile, something similar to spring profiles")
@@ -24,6 +27,16 @@ func init() {
 	viper.Set("configBranch", *configBranch)
 }
 
+func handler(resp http.ResponseWriter, req *http.Request) {
+
+	fmt.Println("Request Recieved")
+	resp.Header().Set("Content-Type", "application/json")
+	resp.WriteHeader(http.StatusOK)
+
+	resp.Write([]byte(viper.GetString("server.message")))
+
+}
+
 func main() {
 	fmt.Printf("Starting %v\n", appName)
 
@@ -33,6 +46,10 @@ func main() {
 		viper.GetString("profile"),
 		viper.GetString("configBranch"))
 
-	// go config.StartListener(appName, viper.GetString("amqp_server_url"), viper.GetString("config_event_bus"))
+	go config.StartListener(appName, amqp_server_url, config_event_bus)
+	http.HandleFunc("/server/message", handler)
+
+	http.ListenAndServe(":8066", nil)
+
 	// service.StartWebServer(viper.GetString("server_port"))
 }

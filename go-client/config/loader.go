@@ -31,11 +31,16 @@ func fetchConfiguration(url string) ([]byte, error) {
 
 func parseConfiguration(body []byte) {
 	var cloudConfig springCloudConfig
+
 	err := json.Unmarshal(body, &cloudConfig)
 	if err != nil {
 		panic("Cannot parse configuration, message: " + err.Error())
 	}
-
+	// fmt.Println(cloudConfig.Name)
+	// fmt.Println(cloudConfig.Profiles)
+	// fmt.Println(cloudConfig.Label)
+	// fmt.Println(cloudConfig.Version)
+	// fmt.Println(cloudConfig.PropertySources)
 	for key, value := range cloudConfig.PropertySources[0].Source {
 		viper.Set(key, value)
 		fmt.Printf("Loading config property %v => %v\n", key, value)
